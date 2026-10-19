@@ -1,6 +1,6 @@
 # VB
 
-Le deuxième cerveau de Samir : notes reliées, agenda, vision board, cartes mentales, graphe en hexagones et objectifs.
+Un deuxième cerveau personnel : notes reliées, agenda, vision board, cartes mentales, graphe vivant façon Miro et objectifs. Tout reste sur ton appareil.
 
 **Ouvrir l'app : https://vbtwelve.github.io/vb/**
 

@@ -636,7 +636,7 @@ input[type=time].in{color-scheme:dark}
 
 <div class="shell" id="shell" hidden>
   <aside class="rail">
-    <div class="brand"><div class="lg2 sm" style="--s:46px" aria-hidden="true"><div class="ring"></div><div class="t"><span>VB</span></div><div class="bar"></div></div><div><b>VB</b><span class="silver">de Samir</span></div></div>
+    <div class="brand"><div class="lg2 sm" style="--s:46px" aria-hidden="true"><div class="ring"></div><div class="t"><span>VB</span></div><div class="bar"></div></div><div><b>VB</b><span class="silver" id="brand-sub">ton second cerveau</span></div></div>
     <nav class="nav" id="nav" aria-label="Sections"></nav>
     <div class="foot">
       <button class="kbd" id="inst-btn" hidden><span>Installer VB</span><kbd>App</kbd></button>
@@ -751,31 +751,40 @@ const mkNode=(text,children)=>({id:uid(),text,children:children||[],collapsed:fa
 function seed(){
   const t=now();const n=(title,body,ago)=>({id:uid(),title,body,created:t-(ago||0),updated:t-(ago||0),pinned:false});
   const welcome=n("Bienvenue dans VB",
-"Ici, tout ce qui compte trouve sa place. Rien ne sort de ton ordinateur.\n\n## Comment ça marche\n- Écris une note et relie-la à une autre avec des doubles crochets : [[Mes principes]], [[Idées en vrac]].\n- Ajoute des #tags pour retrouver tes idées.\n- Les cases se cochent directement en mode lecture.\n\n## Pour démarrer\n- [ ] Écrire ma phrase de vision sur l'accueil\n- [ ] Poser trois images sur le vision board\n- [ ] Compléter la carte « Moi, fin 2027 »\n- [ ] Marquer trois tâches en focus du jour\n- [ ] Importer mon Google Agenda (fichier .ics) dans l'Agenda\n\n## Raccourcis\n- **Ctrl + K** : tout chercher, tout ouvrir\n- **Alt + N** : nouvelle note\n- Carte mentale : **Tab** ajoute un enfant, **Entrée** un frère, **F2** modifie, **Suppr** retire, **Espace** replie.\n- Vision board : colle une image avec **Ctrl + V**, ou glisse-la depuis ton ordinateur.\n\n> Ce que tu notes, tu le gardes. Ce que tu relies, tu le comprends.");
+"Ici, tout ce qui compte trouve sa place. Rien ne sort de ton ordinateur.\n\n## Comment ça marche\n- Écris une note et relie-la à une autre avec des doubles crochets : [[Mes principes]], [[Idées en vrac]].\n- Ajoute des #tags pour retrouver tes idées.\n- Les cases se cochent directement en mode lecture.\n\n## Pour démarrer\n- [ ] Écrire ma phrase de vision sur l'accueil\n- [ ] Poser trois images sur le vision board\n- [ ] Compléter la carte « Moi, dans un an »\n- [ ] Marquer trois tâches en focus du jour\n- [ ] Importer mon Google Agenda (fichier .ics) dans l'Agenda\n\n## Raccourcis\n- **Ctrl + K** : tout chercher, tout ouvrir\n- **Alt + N** : nouvelle note\n- Carte mentale : **Tab** ajoute un enfant, **Entrée** un frère, **F2** modifie, **Suppr** retire, **Espace** replie.\n- Vision board : colle une image avec **Ctrl + V**, ou glisse-la depuis ton ordinateur.\n\n> Ce que tu notes, tu le gardes. Ce que tu relies, tu le comprends.");
   welcome.pinned=true;
   const princ=n("Mes principes","Ce en quoi je crois, ce qui guide mes choix. #fondations\n\n1. \n\nÀ relier avec [[Idées en vrac]] quand une idée devient une règle.",60000);
   const idees=n("Idées en vrac","Tout ce qui passe par la tête, avant de le trier. #inbox\n\n- ",120000);
-  const map={id:uid(),view:null,root:mkNode("Moi, fin 2027",[
-    mkNode("Corps",[mkNode("100 kg en septembre 2027"),mkNode("Muscu tenue chaque semaine")]),
-    mkNode("Mobilité",[mkNode("Permis"),mkNode("Voiture d'ici janvier 2027")]),
-    mkNode("Études",[mkNode("Licence au Cnam")]),
-    mkNode("Pro",[mkNode("Formation des NC"),mkNode("Automatiser le reporting")]),
-    mkNode("Patrimoine",[mkNode("Épargne régulière"),mkNode("Studio de Neudorf")]),
-    mkNode("Projets perso",[mkNode("Idée à creuser")])
+  const map={id:uid(),view:null,root:mkNode("Moi, dans un an",[
+    mkNode("Santé",[mkNode("Courir 10 km"),mkNode("Dormir 7 h par nuit")]),
+    mkNode("Apprendre",[mkNode("Bases de l'espagnol"),mkNode("12 livres dans l'année")]),
+    mkNode("Pro",[mkNode("Lancer un projet perso"),mkNode("Une compétence nouvelle")]),
+    mkNode("Voyages",[mkNode("Japon"),mkNode("Un week-end par saison")]),
+    mkNode("Idées",[mkNode("Idée à creuser")])
   ])};
-  return {version:1,created:t,vision:"",notes:[welcome,princ,idees],
+  const T=today(),d1=addDays(T,1),d3=addDays(T,3);
+  return {version:1,created:t,vision:"",me:{name:""},notes:[welcome,princ,idees],
     board:{zTop:3,view:null,items:[
-      {id:uid(),type:"text",style:"titre",text:"Fin 2027",x:0,y:0,w:520,z:1},
+      {id:uid(),type:"text",style:"titre",text:"Dans un an",x:0,y:0,w:520,z:1},
       {id:uid(),type:"text",style:"citation",text:"Écris ici la phrase qui te fait te lever le matin.",x:0,y:120,w:460,z:2},
-      {id:uid(),type:"text",style:"carte",text:"Glisse ici les images de ce que tu construis : le physique, la voiture, le lieu où tu veux vivre.",x:560,y:20,w:300,z:3}
+      {id:uid(),type:"text",style:"carte",text:"Glisse ici les images de ce que tu construis : un voyage, un projet, le lieu où tu veux vivre.",x:560,y:20,w:300,z:3}
     ]},
     maps:[map],
-    tasks:[],
+    tasks:[
+      {id:uid(),title:"Découvrir VB : ouvrir chaque onglet",domain:"perso",done:false,focus:true,due:T,created:t},
+      {id:uid(),title:"Poser un post-it dans le Graphe",domain:"perso",done:false,focus:true,due:T,created:t},
+      {id:uid(),title:"Préparer la réunion de lundi",domain:"pro",done:false,focus:false,due:d1,created:t},
+      {id:uid(),title:"Ranger mes idées en vrac",domain:"perso",done:false,focus:false,due:"",created:t}
+    ],
+    events:[
+      {id:uid(),title:"Exemple : séance de sport",date:T,allDay:false,start:"18:30",end:"19:30",domain:"perso",place:"",notes:"Un rendez-vous d'exemple, supprime-le quand tu veux."},
+      {id:uid(),title:"Exemple : point d'équipe",date:d3,allDay:false,start:"10:00",end:"11:00",domain:"pro",place:"",notes:""}
+    ],
     goals:[
-      {id:uid(),title:"Descendre à 100 kg",domain:"perso",unit:"kg",start:107,current:107,target:100,deadline:"2027-09-30"},
-      {id:uid(),title:"Acheter ma voiture",domain:"perso",unit:"étape",start:0,current:0,target:1,deadline:"2027-01-31"},
-      {id:uid(),title:"Obtenir le permis",domain:"perso",unit:"étape",start:0,current:0,target:1,deadline:""},
-      {id:uid(),title:"Valider la licence au Cnam",domain:"pro",unit:"étape",start:0,current:0,target:1,deadline:""}
+      {id:uid(),title:"Courir 10 km",domain:"perso",unit:"km",start:0,current:3,target:10,deadline:""},
+      {id:uid(),title:"Lire 12 livres cette année",domain:"perso",unit:"livres",start:0,current:2,target:12,deadline:""},
+      {id:uid(),title:"Mettre de côté pour un voyage",domain:"perso",unit:"€",start:0,current:250,target:1000,deadline:""},
+      {id:uid(),title:"Apprendre une nouvelle compétence",domain:"pro",unit:"étape",start:0,current:0,target:1,deadline:""}
     ]};
 }
 function migrateGraphs(s){
@@ -786,7 +795,7 @@ function migrateGraphs(s){
   Object.defineProperty(s,"graph",{get(){return this.graphs.find(g=>g.id===this.graphCur)||this.graphs[0];},enumerable:false,configurable:true});
 }
 function migrate(s){s=s||{};s.version=1;s.vision=s.vision||"";s.notes=s.notes||[];s.board=s.board||{items:[],zTop:0,view:null};s.board.items=s.board.items||[];
-  s.board.zTop=s.board.zTop||s.board.items.length;s.maps=s.maps||[];s.tasks=s.tasks||[];s.goals=s.goals||[];s.events=s.events||[];s.links=s.links||[];migrateGraphs(s);s.splash=Object.assign({quote:DEFAULT_QUOTE,by:"",on:true},s.splash||{});return s;}
+  s.board.zTop=s.board.zTop||s.board.items.length;s.maps=s.maps||[];s.tasks=s.tasks||[];s.goals=s.goals||[];s.events=s.events||[];s.links=s.links||[];migrateGraphs(s);s.me=Object.assign({name:""},s.me||{});s.splash=Object.assign({quote:DEFAULT_QUOTE,by:"",on:true},s.splash||{});return s;}
 
 const noteById=id=>S.notes.find(n=>n.id===id);
 const findTitle=t=>{const k=norm(t).trim();return S.notes.find(n=>norm(n.title).trim()===k);};
@@ -808,6 +817,7 @@ const VIEWS=[["home","Accueil"],["agenda","Agenda"],["notes","Notes"],["board","
 function renderNav(){
   const counts={agenda:S.events.filter(e=>e.date===today()).length||"",notes:S.notes.length,map:S.maps.length,actions:S.tasks.filter(t=>!t.done).length||""};
   $("#nav").innerHTML=VIEWS.map(([k,l])=>'<button class="navi" data-go="'+k+'"'+(ui.view===k?' aria-current="page"':"")+'>'+svgI(k)+'<span>'+l+'</span><span class="k">'+(counts[k]||"")+'</span></button>').join("");
+  const nm=S.me.name;$("#brand-sub").textContent=nm?(/^[aeiouyhéèêëàâîïôûü]/i.test(nm)?"d'":"de ")+nm:"ton second cerveau";
   $("#where").textContent=B.kind==="fs"?"Dossier : "+folderName:B.kind==="idb"?"Dans ce navigateur":"Mode secours";
 }
 let teardown=null;
@@ -838,7 +848,7 @@ function vHome(){
   const recent=sortedNotes().filter(n=>!n.pinned).concat(S.notes.filter(n=>n.pinned)).sort((a,b)=>b.updated-a.updated).slice(0,5);
   const items=[...S.board.items].sort((a,b)=>(b.type==="image")-(a.type==="image")||b.z-a.z).filter(i=>i.type!=="note").slice(0,5);
   return '<div class="page"><div class="home">'+
-  '<section class="hero"><div class="eb">'+greet()+', Samir · '+esc(date)+'</div>'+
+  '<section class="hero"><div class="eb">'+greet()+(S.me.name?', '+esc(S.me.name):'')+' · '+esc(date)+'</div>'+
     '<div class="vision" id="vision" contenteditable="true" spellcheck="false" role="textbox" aria-label="Ta phrase de vision" data-ph="Écris ici la phrase qui te tient debout.">'+esc(S.vision)+'</div><div class="hair"></div></section>'+
   '<form class="capture" id="capture" autocomplete="off"><input class="in" id="cap-in" placeholder="Capturer une idée, une tâche…" aria-label="Capture rapide">'+
     '<div class="seg" id="cap-kind" role="group" aria-label="Type"><button type="button" data-k="note" aria-pressed="true">Note</button><button type="button" data-k="pro" aria-pressed="false">Tâche pro</button><button type="button" data-k="perso" aria-pressed="false">Tâche perso</button></div>'+
@@ -1843,6 +1853,7 @@ function storageText(){return B.kind==="fs"?"Dans le dossier « "+esc(folderName
 function vSettings(){
   const sp=S.splash,fsOK="showDirectoryPicker" in window;
   return'<div class="page"><header class="vh"><div><div class="eb">Réglages</div><h1>Ton <i>VB</i></h1></div></header><div class="set">'+
+  '<section class="card"><header><h2>Toi</h2></header><label class="fl">Ton prénom<input class="in" id="set-name" maxlength="40" value="'+esc(S.me.name)+'" placeholder="Pour l\'accueil et le logo" autocomplete="given-name"></label></section>'+
   '<section class="card"><header><h2>Écran d\'ouverture</h2><button class="b sm" data-s="replay">Revoir l\'ouverture</button></header>'+
     '<div class="sp-prev"><blockquote id="pv-q">'+esc(sp.quote)+'</blockquote><div class="eb" id="pv-by">'+esc(sp.by)+'</div></div>'+
     '<label class="fl">Citation<textarea class="in" id="set-q" rows="3" maxlength="240">'+esc(sp.quote)+'</textarea></label>'+
@@ -1850,7 +1861,8 @@ function vSettings(){
     '<label class="ck2"><input type="checkbox" id="set-on"'+(sp.on!==false?" checked":"")+'> Afficher l\'ouverture à chaque lancement</label></section>'+
   '<section class="card"><header><h2>Où vit VB</h2></header><p class="muted">'+storageText()+'</p><div class="opts">'+
     (fsOK&&B.kind!=="mem"&&!APPMODE?'<button class="b p" data-s="folder">'+(B.kind==="fs"?"Ouvrir un autre dossier":"Déplacer vers un dossier de mon ordi")+'</button>':"")+
-    '<button class="b" data-s="export">Exporter une sauvegarde</button><button class="b" data-s="import">Importer une sauvegarde</button></div></section>'+
+    '<button class="b" data-s="export">Exporter une sauvegarde</button><button class="b" data-s="import">Importer une sauvegarde</button></div>'+
+    '<p class="muted" style="margin:1.2rem 0 .6rem;font-size:.85rem">VB démarre avec des exemples. Quand tu veux partir de ta vraie page blanche :</p><div class="opts"><button class="b" data-s="wipe">Tout effacer et repartir de zéro</button></div></section>'+
   '<section class="card"><header><h2>Installer VB</h2></header><p class="muted" id="inst-txt">'+installText()+'</p><div class="opts">'+(installEvt?'<button class="b p" data-s="install">Installer VB sur cet appareil</button>':"")+'</div>'+
   '<p class="muted" style="margin:1.2rem 0 0;font-size:.8rem">Version '+VB_VERSION+'. Les mises à jour arrivent toutes seules au lancement.</p></section>'+
   '</div></div>';
@@ -1862,12 +1874,15 @@ function installText(){if(STANDALONE)return"VB est installé sur cet appareil. I
 function bindSettings(){
   const m=$("#main"),q=$("#set-q"),by=$("#set-by"),on=$("#set-on");
   const upd=()=>{S.splash.quote=q.value.trim()||DEFAULT_QUOTE;S.splash.by=by.value.trim();S.splash.on=on.checked;$("#pv-q").textContent=S.splash.quote;$("#pv-by").textContent=S.splash.by;cacheSplash();commit();};
-  q.addEventListener("input",upd);by.addEventListener("input",upd);on.addEventListener("change",()=>{upd();toast(on.checked?"L'ouverture s'affichera à chaque lancement":"VB s'ouvrira directement");});
+  q.addEventListener("input",upd);by.addEventListener("input",upd);
+  $("#set-name").addEventListener("input",e=>{S.me.name=e.target.value.trim();renderNav();commitSoft();});on.addEventListener("change",()=>{upd();toast(on.checked?"L'ouverture s'affichera à chaque lancement":"VB s'ouvrira directement");});
   const click=async e=>{const b=e.target.closest("[data-s]");if(!b)return;const k=b.dataset.s;
     if(k==="replay")showSplash(S.splash,()=>"ready",()=>revealShell());
     if(k==="install"&&installEvt){installEvt.prompt();try{await installEvt.userChoice;}catch(e){}installEvt=null;render();}
     if(k==="folder")await pickFolder(B.kind!=="fs");
     if(k==="export"){const blob=new Blob([JSON.stringify(S,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="vb-sauvegarde-"+today()+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);toast("Sauvegarde exportée (sans les images)");}
+    if(k==="wipe"){confirmDlg("Tout effacer ?","Notes, agenda, tâches, objectifs, vision board, cartes et graphes disparaissent. Ton prénom et ta citation restent. Exporte une sauvegarde avant si tu veux garder quelque chose.","Tout effacer",()=>{
+      if(B.removeNote)S.notes.forEach(n=>{if(n.file)B.removeNote(n.file);});S=migrate({me:S.me,splash:S.splash,created:now()});commit();go("home");toast("VB est vide, à toi de jouer");});return;}
     if(k==="import"){const fi=document.createElement("input");fi.type="file";fi.accept="application/json,.json";fi.onchange=async()=>{try{const s=JSON.parse(await fi.files[0].text());if(!s.notes)throw new Error("fichier non reconnu");S=migrate(s);S.notes.forEach(n=>dirtyNotes.add(n.id));cacheSplash();commit();render();toast("Sauvegarde importée");}catch(err){toast("Import impossible : "+err.message);}};fi.click();}
   };
   m.addEventListener("click",click);teardown=()=>m.removeEventListener("click",click);
@@ -1896,7 +1911,7 @@ $("#open-settings").addEventListener("click",()=>go("settings"));
 const STANDALONE=matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
 const WEBAPP=/github\.io$/.test(location.hostname);
 const APPMODE=/[?&]app=1(&|$)/.test(location.search)||STANDALONE||WEBAPP;
-const VB_VERSION="2026.10.18-3";if(/[?&]test=1\b/.test(location.search))window.__VB={get S(){return S;},get G(){return GRAPH;}};
+const VB_VERSION="2026.10.19-1";if(/[?&]test=1\b/.test(location.search))window.__VB={get S(){return S;},get G(){return GRAPH;}};
 const FRAMED=(()=>{try{return window.self!==window.top;}catch(e){return true;}})();
 let envHidden=false;
 function envCheck(){const bar=$("#envbar");let t="";
